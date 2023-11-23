@@ -14,9 +14,9 @@ public class Tada extends JPanel implements ActionListener{
     int x = 500;
     int y = 500;
 
-    char direction = 'D';
     int vx = 0;
-    int vy = -10;
+    int vy = 10;
+    int ay = 1;
 
     boolean running = false;
     Random random;
@@ -47,6 +47,7 @@ public class Tada extends JPanel implements ActionListener{
     public void move() {
         x+=vx;
         y+=vy;
+        vy += ay;
     }
 
     public void draw(Graphics graphics) {
@@ -87,31 +88,19 @@ public class Tada extends JPanel implements ActionListener{
     public class MyKeyAdapter extends KeyAdapter {
         @Override
         public void keyPressed(KeyEvent e) {
-            // switch (e.getKeyCode()) {
-            //     case KeyEvent.VK_LEFT:
-            //         if (direction != 'R') {
-            //             direction = 'L';
-            //         }
-            //         break;
+            switch (e.getKeyCode()) {
+                case KeyEvent.VK_LEFT:
+                    vx = -10;
+                    break;
 
-            //     case KeyEvent.VK_RIGHT:
-            //         if (direction != 'L') {
-            //             direction = 'R';
-            //         }
-            //         break;
+                case KeyEvent.VK_RIGHT:
+                    vx = 10;
+                    break;
 
-            //     case KeyEvent.VK_UP:
-            //         if (direction != 'D') {
-            //             direction = 'U';
-            //         }
-            //         break;
-
-            //     case KeyEvent.VK_DOWN:
-            //         if (direction != 'U') {
-            //             direction = 'D';
-            //         }
-            //         break;
-            // }
+                case KeyEvent.VK_UP:
+                    vy = -10;
+                    break;
+            }
         }
     }
 }
