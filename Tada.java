@@ -3,8 +3,6 @@ import javax.swing.*;
 import java.awt.event.*;
 import java.util.Random;
 
-import javax.swing.JPanel;
-
 public class Tada extends JPanel implements ActionListener {
 
     static final int WIDTH = 1000;
@@ -14,6 +12,7 @@ public class Tada extends JPanel implements ActionListener {
     int y = 500;
 
     int vx = 0;
+    int ax = 0;
     double vy = 10.0;
     double ay = 0.5;
 
@@ -45,8 +44,10 @@ public class Tada extends JPanel implements ActionListener {
 
     public void move() {
         x += vx;
-        y += vy;
-        vy += ay;
+
+        
+        // y += vy;
+        // vy += ay;
     }
 
     public void draw(Graphics graphics) {
@@ -87,19 +88,47 @@ public class Tada extends JPanel implements ActionListener {
     public class MyKeyAdapter extends KeyAdapter {
         @Override
         public void keyPressed(KeyEvent e) {
-            switch (e.getKeyCode()) {
-                case KeyEvent.VK_LEFT:
-                    vx = -10;
-                    break;
-
-                case KeyEvent.VK_RIGHT:
-                    vx = 10;
-                    break;
-
-                case KeyEvent.VK_UP:
-                    vy = -10;
-                    break;
+            int key = e.getKeyCode();
+            if (key == KeyEvent.VK_LEFT) {
+                if (vx >= -20) { vx -= ax; }
+                if (ax <= 20) { ax++; }
             }
+            if (key == KeyEvent.VK_RIGHT) {
+                if (vx <= 20) { vx += ax; }
+                if (ax <= 20) { ax++; }
+            }
+            if (key == KeyEvent.VK_UP) {
+                vy = -10;
+            }
+            if(key != KeyEvent.VK_LEFT && key != KeyEvent.VK_RIGHT) {
+                if (vx > 0) { vx -= 2; }
+                if (vx < 0) { vx += 2; }
+                if (vx == 1 || vx == -1) {
+                    vx = 0;
+                }
+            }
+            // switch (e.getKeyCode()) {
+            //     case KeyEvent.VK_LEFT:
+            //         if (vx >= -20) { vx -= ax; }
+            //         if (ax <= 20) { ax++; }
+            //         break;
+
+            //     case KeyEvent.VK_RIGHT:
+            //         if (vx <= 20) { vx += ax; }
+            //         if (ax <= 20) { ax++; }
+            //         break;
+
+            //     case KeyEvent.VK_UP:
+            //         vy = -10;
+            //         break;
+            //     default:
+            //         if (vx > 0) { vx -= 2; }
+            //         if (vx < 0) { vx += 2; }
+            //         if (vx == 1 || vx == -1) {
+            //         vx = 0;
+            //         }
+            //         break;
+            // }
         }
     }
 }
