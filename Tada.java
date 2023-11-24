@@ -21,6 +21,8 @@ public class Tada extends JPanel implements ActionListener {
     Random random;
     Timer timer;
 
+    Blocks list[] = new Blocks[5];
+
     Tada() {
         random = new Random();
         this.setPreferredSize(new Dimension(WIDTH, HEIGHT));
@@ -53,6 +55,11 @@ public class Tada extends JPanel implements ActionListener {
         if (running) {
             graphics.setColor(new Color(0, 255, 0));
             graphics.fillRect(x, y, 75, 75);
+
+            graphics.setColor(new Color(255, 0, 0));
+            for (Blocks blocks : list) {
+                graphics.fillRect(blocks.blockx, blocks.blocky, blocks.blockwidth, blocks.blockheight);
+            }
 
             graphics.setColor(Color.white);
             graphics.setFont(new Font("Sans serif", Font.ROMAN_BASELINE, 25));
