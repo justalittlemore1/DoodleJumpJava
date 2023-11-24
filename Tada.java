@@ -5,18 +5,17 @@ import java.util.Random;
 
 import javax.swing.JPanel;
 
-public class Tada extends JPanel implements ActionListener{
+public class Tada extends JPanel implements ActionListener {
 
     static final int WIDTH = 1000;
     static final int HEIGHT = 1000;
-    
 
     int x = 500;
     int y = 500;
 
     int vx = 0;
-    int vy = 10;
-    int ay = 1;
+    double vy = 10.0;
+    double ay = 0.5;
 
     boolean running = false;
     Random random;
@@ -34,7 +33,7 @@ public class Tada extends JPanel implements ActionListener{
     public void play() {
         running = true;
 
-        timer = new Timer(80, this);
+        timer = new Timer(1, this);
         timer.start();
     }
 
@@ -45,20 +44,20 @@ public class Tada extends JPanel implements ActionListener{
     }
 
     public void move() {
-        x+=vx;
-        y+=vy;
+        x += vx;
+        y += vy;
         vy += ay;
     }
 
     public void draw(Graphics graphics) {
         if (running) {
             graphics.setColor(new Color(0, 255, 0));
-            graphics.fillRect(x, y, 200, 200);
+            graphics.fillRect(x, y, 75, 75);
 
             graphics.setColor(Color.white);
             graphics.setFont(new Font("Sans serif", Font.ROMAN_BASELINE, 25));
             FontMetrics metrics = getFontMetrics(graphics.getFont());
-            graphics.drawString("SCORE: ", (WIDTH - metrics.stringWidth("SCORE: "))/2, graphics.getFont().getSize());
+            graphics.drawString("SCORE: ", (WIDTH - metrics.stringWidth("SCORE: ")) / 2, graphics.getFont().getSize());
         } else {
             gameOver(graphics);
         }
@@ -68,12 +67,12 @@ public class Tada extends JPanel implements ActionListener{
         graphics.setColor(Color.red);
         graphics.setFont(new Font("Sans serif", Font.ROMAN_BASELINE, 50));
         FontMetrics metrics = getFontMetrics(graphics.getFont());
-        graphics.drawString("GAME OVER", (WIDTH - metrics.stringWidth("GAME OVER"))/2, HEIGHT/2);
+        graphics.drawString("GAME OVER", (WIDTH - metrics.stringWidth("GAME OVER")) / 2, HEIGHT / 2);
 
         graphics.setColor(Color.white);
         graphics.setFont(new Font("Sans serif", Font.ROMAN_BASELINE, 25));
         metrics = getFontMetrics(graphics.getFont());
-        graphics.drawString("SCORE: ", (WIDTH - metrics.stringWidth("SCORE: "))/2, graphics.getFont().getSize());
+        graphics.drawString("SCORE: ", (WIDTH - metrics.stringWidth("SCORE: ")) / 2, graphics.getFont().getSize());
     }
 
     @Override
