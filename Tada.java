@@ -11,10 +11,12 @@ public class Tada extends JPanel implements ActionListener {
     int x = 500;
     int y = 500;
 
-    int vx = 0;
-    int ax = 0;
+    double vx = 0.00;
+    double ax = 0.00;
     double vy = 10.0;
     double ay = 0.5;
+
+    int key;
 
     boolean running = false;
     Random random;
@@ -43,11 +45,30 @@ public class Tada extends JPanel implements ActionListener {
     }
 
     public void move() {
+        if (key == KeyEvent.VK_LEFT) {
+            if (vx >= -10) { vx -= ax; }
+            if (ax <= 10) { ax++; }
+        }
+        if (key == KeyEvent.VK_RIGHT) {
+            if (vx <= 10) { vx += ax; }
+            if (ax <= 10) { ax++; }
+        }
+        if (key == KeyEvent.VK_UP) {
+            vy = -10;
+        }
+        if(key != KeyEvent.VK_LEFT && key != KeyEvent.VK_RIGHT) {
+            if (vx > 0) { vx -= 1; }
+            if (vx < 0) { vx += 1; }
+            if (vx == 1 || vx == -1) {
+                vx = 0;
+            }
+        }
+
         x += vx;
 
         
-        // y += vy;
-        // vy += ay;
+        y += vy;
+        vy += ay;
     }
 
     public void draw(Graphics graphics) {
@@ -88,47 +109,11 @@ public class Tada extends JPanel implements ActionListener {
     public class MyKeyAdapter extends KeyAdapter {
         @Override
         public void keyPressed(KeyEvent e) {
-            int key = e.getKeyCode();
-            if (key == KeyEvent.VK_LEFT) {
-                if (vx >= -20) { vx -= ax; }
-                if (ax <= 20) { ax++; }
-            }
-            if (key == KeyEvent.VK_RIGHT) {
-                if (vx <= 20) { vx += ax; }
-                if (ax <= 20) { ax++; }
-            }
-            if (key == KeyEvent.VK_UP) {
-                vy = -10;
-            }
-            if(key != KeyEvent.VK_LEFT && key != KeyEvent.VK_RIGHT) {
-                if (vx > 0) { vx -= 2; }
-                if (vx < 0) { vx += 2; }
-                if (vx == 1 || vx == -1) {
-                    vx = 0;
-                }
-            }
-            // switch (e.getKeyCode()) {
-            //     case KeyEvent.VK_LEFT:
-            //         if (vx >= -20) { vx -= ax; }
-            //         if (ax <= 20) { ax++; }
-            //         break;
+            key = e.getKeyCode();
+        }
 
-            //     case KeyEvent.VK_RIGHT:
-            //         if (vx <= 20) { vx += ax; }
-            //         if (ax <= 20) { ax++; }
-            //         break;
-
-            //     case KeyEvent.VK_UP:
-            //         vy = -10;
-            //         break;
-            //     default:
-            //         if (vx > 0) { vx -= 2; }
-            //         if (vx < 0) { vx += 2; }
-            //         if (vx == 1 || vx == -1) {
-            //         vx = 0;
-            //         }
-            //         break;
-            // }
+        public void keyReleased(KeyEvent e) {
+            key = 0;
         }
     }
 }
