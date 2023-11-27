@@ -11,6 +11,8 @@ public class Tada extends JPanel implements ActionListener {
 
     int x = 500;
     int y = 500;
+    int guywidth = 75;
+    int guyheight = 75;
 
     double vx = 0.00;
     double ax = 0.00;
@@ -53,19 +55,31 @@ public class Tada extends JPanel implements ActionListener {
 
     public void move() {
         if (key == KeyEvent.VK_LEFT) {
-            if (vx >= -10) { vx -= ax; }
-            if (ax <= 10) { ax++; }
+            if (vx >= -5) {
+                vx -= ax;
+            }
+            if (ax <= 5) {
+                ax++;
+            }
         }
         if (key == KeyEvent.VK_RIGHT) {
-            if (vx <= 10) { vx += ax; }
-            if (ax <= 10) { ax++; }
+            if (vx <= 5) {
+                vx += ax;
+            }
+            if (ax <= 5) {
+                ax++;
+            }
         }
         if (key == KeyEvent.VK_UP) {
             vy = -10;
         }
-        if(key != KeyEvent.VK_LEFT && key != KeyEvent.VK_RIGHT) {
-            if (vx > 0) { vx -= 1; }
-            if (vx < 0) { vx += 1; }
+        if (key != KeyEvent.VK_LEFT && key != KeyEvent.VK_RIGHT) {
+            if (vx > 0) {
+                vx -= 1;
+            }
+            if (vx < 0) {
+                vx += 1;
+            }
             if (vx == 1 || vx == -1) {
                 vx = 0;
             }
@@ -73,15 +87,16 @@ public class Tada extends JPanel implements ActionListener {
 
         x += vx;
 
-        
         y += vy;
         vy += ay;
+
+        System.out.println(vy);
     }
 
     public void draw(Graphics graphics) {
         if (running) {
             graphics.setColor(new Color(0, 255, 0));
-            graphics.fillRect(x, y, 75, 75);
+            graphics.fillRect(x, y, guywidth, guyheight);
 
             graphics.setColor(new Color(255, 0, 0));
             for (Blocks blocks : list) {
@@ -95,6 +110,16 @@ public class Tada extends JPanel implements ActionListener {
             graphics.drawString("SCORE: ", (WIDTH - metrics.stringWidth("SCORE: ")) / 2, graphics.getFont().getSize());
         } else {
             gameOver(graphics);
+        }
+    }
+
+    public void checkBounce() {
+        for (Blocks blocks : list) {
+            if ((x + guywidth) >= (blocks.blockx) && x <= (blocks.blockx + blocks.blockwidth)
+                    && (y + guyheight) >= (blocks.blocky) && (y + guyheight) <= (blocks.blocky + blocks.blockheight)
+                    && vy >= 0) {
+                vy = -20;
+            }
         }
     }
 
@@ -114,6 +139,7 @@ public class Tada extends JPanel implements ActionListener {
     public void actionPerformed(ActionEvent arg0) {
         if (running) {
             move();
+            checkBounce();
         }
 
         repaint();
