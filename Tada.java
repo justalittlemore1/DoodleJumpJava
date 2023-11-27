@@ -11,8 +11,8 @@ public class Tada extends JPanel implements ActionListener {
 
     int x = 500;
     int y = 500;
-    int guywidth = 75;
-    int guyheight = 75;
+    int guywidth = 100;
+    int guyheight = 150;
 
     double vx = 0.00;
     double ax = 0.00;
@@ -88,9 +88,9 @@ public class Tada extends JPanel implements ActionListener {
         x += vx;
 
         y += vy;
-        vy += ay;
-
-        System.out.println(vy);
+        if (vy <= 30) {
+            vy += ay;
+        }
     }
 
     public void draw(Graphics graphics) {
@@ -118,7 +118,7 @@ public class Tada extends JPanel implements ActionListener {
             if ((x + guywidth) >= (blocks.blockx) && x <= (blocks.blockx + blocks.blockwidth)
                     && (y + guyheight) >= (blocks.blocky) && (y + guyheight) <= (blocks.blocky + blocks.blockheight)
                     && vy >= 0) {
-                vy = -20;
+                vy = -22;
             }
         }
     }
