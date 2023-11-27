@@ -1,9 +1,8 @@
 import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
+import java.util.ArrayList;
 import java.util.Random;
-
-import javax.swing.JPanel;
 
 public class Tada extends JPanel implements ActionListener {
 
@@ -21,7 +20,7 @@ public class Tada extends JPanel implements ActionListener {
     Random random;
     Timer timer;
 
-    Blocks list[] = new Blocks[5];
+    ArrayList<Blocks> list = new ArrayList<Blocks>();
 
     Tada() {
         random = new Random();
@@ -34,6 +33,10 @@ public class Tada extends JPanel implements ActionListener {
 
     public void play() {
         running = true;
+
+        for (int i = 0; i < 5; i++) {
+            list.add((new Blocks()));
+        }
 
         timer = new Timer(1, this);
         timer.start();
@@ -58,7 +61,8 @@ public class Tada extends JPanel implements ActionListener {
 
             graphics.setColor(new Color(255, 0, 0));
             for (Blocks blocks : list) {
-                graphics.fillRect(blocks.blockx, blocks.blocky, blocks.blockwidth, blocks.blockheight);
+                graphics.fillRect(blocks.blockx, blocks.blocky, blocks.blockwidth,
+                        blocks.blockheight);
             }
 
             graphics.setColor(Color.white);
