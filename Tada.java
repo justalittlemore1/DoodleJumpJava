@@ -10,14 +10,16 @@ public class Tada extends JPanel implements ActionListener {
     static final int HEIGHT = 1000;
 
     int x = 500;
-    int y = 500;
+    int y = 800;
     int guywidth = 100;
     int guyheight = 150;
 
     double vx = 0.00;
     double ax = 0.00;
-    double vy = 10.0;
-    double ay = 0.5;
+    double vy = 12.0;
+    double ay = 0.7;
+
+    boolean ATIAAATIB = false;
 
     int key;
 
@@ -55,18 +57,18 @@ public class Tada extends JPanel implements ActionListener {
 
     public void move() {
         if (key == KeyEvent.VK_LEFT) {
-            if (vx >= -5) {
+            if (vx >= -7) {
                 vx -= ax;
             }
-            if (ax <= 5) {
+            if (ax <= 7) {
                 ax++;
             }
         }
         if (key == KeyEvent.VK_RIGHT) {
-            if (vx <= 5) {
+            if (vx <= 7) {
                 vx += ax;
             }
-            if (ax <= 5) {
+            if (ax <= 7) {
                 ax++;
             }
         }
@@ -88,8 +90,16 @@ public class Tada extends JPanel implements ActionListener {
         x += vx;
 
         y += vy;
-        if (vy <= 30) {
+        if (vy <= 40) {
             vy += ay;
+        }
+
+        if (x <= HEIGHT) {
+            ATIAAATIB = true;
+        }
+
+        if (ATIAAATIB) {
+            
         }
     }
 
