@@ -107,6 +107,12 @@ public class Tada extends JPanel implements ActionListener {
                 blocks.allThatIsAboveAndAllThatIsBelow(vy);
             }
         }
+
+        if (x + guywidth/2 < 0) {
+            x = WIDTH - guywidth/2;
+        } else if (x + guywidth/2 > WIDTH) {
+            x = 0 - guywidth/2;
+        }
     }
 
     public void draw(Graphics graphics) {
