@@ -89,17 +89,24 @@ public class Tada extends JPanel implements ActionListener {
 
         x += vx;
 
-        y += vy;
+        if (!ATIAAATIB) {
+            y += vy;
+        }
+
         if (vy <= 40) {
             vy += ay;
         }
 
-        if (x <= HEIGHT) {
+        if (y <= HEIGHT/2 - guyheight && vy < 0) {
             ATIAAATIB = true;
+        } else {
+            ATIAAATIB = false;
         }
 
         if (ATIAAATIB) {
-            
+            for (Blocks blocks : list) {
+                blocks.allThatIsAboveAndAllThatIsBelow(vy);
+            }
         }
     }
 
