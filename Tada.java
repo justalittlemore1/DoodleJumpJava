@@ -108,10 +108,10 @@ public class Tada extends JPanel implements ActionListener {
             }
         }
 
-        if (x + guywidth/2 < 0) {
-            x = WIDTH - guywidth/2;
-        } else if (x + guywidth/2 > WIDTH) {
-            x = 0 - guywidth/2;
+        if (x + guywidth / 2 < 0) {
+            x = WIDTH - guywidth / 2;
+        } else if (x + guywidth / 2 > WIDTH) {
+            x = 0 - guywidth / 2;
         }
     }
 
