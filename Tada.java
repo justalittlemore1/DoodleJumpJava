@@ -27,6 +27,8 @@ public class Tada extends JPanel implements ActionListener {
     Random random;
     Timer timer;
 
+    ArrayList<Blocks> toremove = new ArrayList<Blocks>();
+
     ArrayList<Blocks> list = new ArrayList<Blocks>();
 
     Tada() {
@@ -86,7 +88,6 @@ public class Tada extends JPanel implements ActionListener {
                 vx = 0;
             }
         }
-
         x += vx;
         if (!ATIAAATIB) {
             y += vy;
@@ -102,9 +103,15 @@ public class Tada extends JPanel implements ActionListener {
             ATIAAATIB = false;
         }
 
-        if (ATIAAATIB) {
-            for (Blocks blocks : list) {
+        for (Blocks blocks : list) {
+            if (blocks.bouncedon) {
+                blocks.blocky += 5;
+            }
+            if (ATIAAATIB) {
                 blocks.allThatIsAboveAndAllThatIsBelow(vy);
+            }
+            if (blocks.blocky > HEIGHT) {
+                toremove.add(blocks);
             }
         }
 
@@ -140,8 +147,10 @@ public class Tada extends JPanel implements ActionListener {
             if ((x + guywidth) >= (blocks.blockx) && x <= (blocks.blockx + blocks.blockwidth)
                     && (y + guyheight) >= (blocks.blocky) && (y + guyheight) <= (blocks.blocky + blocks.blockheight)
                     && vy >= 0) {
-                ay = 0.7;
-                vy = -23;
+                if (!blocks.bouncedon) {
+                    blocks.bouncedon = true;
+                }
+                vy = -25;
             }
         }
     }
@@ -163,6 +172,8 @@ public class Tada extends JPanel implements ActionListener {
         if (running) {
             move();
             checkBounce();
+            list.removeAll(toremove);
+            toremove = new ArrayList<Blocks>();
         }
 
         repaint();
