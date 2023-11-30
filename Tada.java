@@ -19,6 +19,9 @@ public class Tada extends JPanel implements ActionListener {
     double vy = 12.0;
     double ay = 0.7;
 
+    int bounceHeight = 0;
+    int score = 0;
+
     boolean ATIAAATIB = false;
 
     int key;
@@ -43,7 +46,7 @@ public class Tada extends JPanel implements ActionListener {
     public void play() {
         running = true;
 
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 10; i++) {
             list.add((new Blocks()));
         }
 
@@ -105,7 +108,7 @@ public class Tada extends JPanel implements ActionListener {
 
         for (Blocks blocks : list) {
             if (blocks.bouncedon) {
-                blocks.blocky += 5;
+                blocks.blocky += 15;
             }
             if (ATIAAATIB) {
                 blocks.allThatIsAboveAndAllThatIsBelow(vy);
@@ -136,7 +139,8 @@ public class Tada extends JPanel implements ActionListener {
             graphics.setColor(Color.white);
             graphics.setFont(new Font("Sans serif", Font.ROMAN_BASELINE, 25));
             FontMetrics metrics = getFontMetrics(graphics.getFont());
-            graphics.drawString("SCORE: ", (WIDTH - metrics.stringWidth("SCORE: ")) / 2, graphics.getFont().getSize());
+            graphics.drawString("SCORE: " + score, (WIDTH - metrics.stringWidth("SCORE: " + score)) / 2,
+                    graphics.getFont().getSize());
         } else {
             gameOver(graphics);
         }
@@ -151,6 +155,11 @@ public class Tada extends JPanel implements ActionListener {
                     blocks.bouncedon = true;
                 }
                 vy = -25;
+                if (!blocks.unstable) {
+                    bounceHeight = y;
+                    blocks.unstable = true;
+                    score += score();
+                }
             }
         }
     }
@@ -165,6 +174,19 @@ public class Tada extends JPanel implements ActionListener {
         graphics.setFont(new Font("Sans serif", Font.ROMAN_BASELINE, 25));
         metrics = getFontMetrics(graphics.getFont());
         graphics.drawString("SCORE: ", (WIDTH - metrics.stringWidth("SCORE: ")) / 2, graphics.getFont().getSize());
+    }
+
+    public int score() {
+        int theScore = 0;
+
+        if (bounceHeight != 0) {
+            int vi = (int) Math.sqrt(Math.pow(25, 2) + 2 * -ay * -((HEIGHT / 2 - guyheight) - bounceHeight));
+            theScore = (int) ((-(Math.pow(vi, 2))) / (2 * -ay));
+        }
+
+        System.out.println(theScore);
+
+        return theScore;
     }
 
     @Override
