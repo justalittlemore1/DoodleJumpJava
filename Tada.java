@@ -213,7 +213,6 @@ public class Tada extends JPanel implements ActionListener {
             toremove = new ArrayList<Blocks>();
 
             g.generate();
-            System.out.println(g.list.size());
         }
 
         repaint();
