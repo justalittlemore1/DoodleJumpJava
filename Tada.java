@@ -32,7 +32,7 @@ public class Tada extends JPanel implements ActionListener {
     Timer timer;
 
     Generation g = new Generation();
-  
+
     ImageIcon bruhIcon = new ImageIcon("./Broccoli.png");
     Image image = bruhIcon.getImage();
     Image newimg = image.getScaledInstance(guywidth, guyheight, java.awt.Image.SCALE_SMOOTH);
@@ -152,7 +152,7 @@ public class Tada extends JPanel implements ActionListener {
                 planks.paintIcon(this, graphics, blocks.blockx, blocks.blocky);
             }
 
-            graphics.setColor(Color.black);
+            graphics.setColor(Color.white);
             graphics.setFont(new Font("Sans serif", Font.BOLD, 25));
             FontMetrics metrics = getFontMetrics(graphics.getFont());
             graphics.drawString("SCORE: " + score, (WIDTH - metrics.stringWidth("SCORE: " + score)) / 2,
