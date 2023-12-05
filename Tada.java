@@ -31,6 +31,8 @@ public class Tada extends JPanel implements ActionListener {
     Random random;
     Timer timer;
 
+    Generation g = new Generation();
+  
     ImageIcon bruhIcon = new ImageIcon("./Broccoli.png");
     Image image = bruhIcon.getImage();
     Image newimg = image.getScaledInstance(guywidth, guyheight, java.awt.Image.SCALE_SMOOTH);
@@ -43,7 +45,7 @@ public class Tada extends JPanel implements ActionListener {
 
     ArrayList<Blocks> toremove = new ArrayList<Blocks>();
 
-    ArrayList<Blocks> list = new ArrayList<Blocks>();
+    // ArrayList<Blocks> list = new ArrayList<Blocks>();
 
     Tada() {
         random = new Random();
@@ -57,9 +59,9 @@ public class Tada extends JPanel implements ActionListener {
     public void play() {
         running = true;
 
-        for (int i = 0; i < 10; i++) {
-            list.add((new Blocks()));
-        }
+        // for (int i = 0; i < 10; i++) {
+        // list.add((new Blocks(0, 0)));
+        // }
 
         timer = new Timer(1, this);
         timer.start();
@@ -118,7 +120,7 @@ public class Tada extends JPanel implements ActionListener {
             ATIAAATIB = false;
         }
 
-        for (Blocks blocks : list) {
+        for (Blocks blocks : g.list) {
             if (blocks.bouncedon) {
                 blocks.blocky += 15;
             }
@@ -146,9 +148,7 @@ public class Tada extends JPanel implements ActionListener {
             }
 
             graphics.setColor(new Color(255, 0, 0));
-            for (Blocks blocks : list) {
-                // graphics.fillRect(blocks.blockx, blocks.blocky, blocks.blockwidth,
-                // blocks.blockheight);
+            for (Blocks blocks : g.list) {
                 planks.paintIcon(this, graphics, blocks.blockx, blocks.blocky);
             }
 
@@ -163,7 +163,7 @@ public class Tada extends JPanel implements ActionListener {
     }
 
     public void checkBounce() {
-        for (Blocks blocks : list) {
+        for (Blocks blocks : g.list) {
             if ((x + guywidth) >= (blocks.blockx) && x <= (blocks.blockx + Blocks.blockwidth)
                     && (y + guyheight) >= (blocks.blocky + 7)
                     && (y + guyheight) <= (blocks.blocky + Blocks.blockheight)
@@ -209,8 +209,11 @@ public class Tada extends JPanel implements ActionListener {
         if (running) {
             move();
             checkBounce();
-            list.removeAll(toremove);
+            g.list.removeAll(toremove);
             toremove = new ArrayList<Blocks>();
+
+            g.generate();
+            System.out.println(g.list.size());
         }
 
         repaint();
