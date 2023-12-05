@@ -1,4 +1,5 @@
 import java.awt.*;
+
 import javax.swing.*;
 import java.awt.event.*;
 import java.util.ArrayList;
@@ -11,8 +12,8 @@ public class Tada extends JPanel implements ActionListener {
 
     int x = 500;
     int y = 800;
-    int guywidth = 100;
-    int guyheight = 150;
+    int guywidth = 200;
+    int guyheight = 200;
 
     double vx = 0.00;
     double ax = 0.00;
@@ -31,6 +32,16 @@ public class Tada extends JPanel implements ActionListener {
     Timer timer;
 
     Generation g = new Generation();
+  
+    ImageIcon bruhIcon = new ImageIcon("./Broccoli.png");
+    Image image = bruhIcon.getImage();
+    Image newimg = image.getScaledInstance(guywidth, guyheight, java.awt.Image.SCALE_SMOOTH);
+    ImageIcon alienDood = new ImageIcon(newimg);
+
+    ImageIcon yupIcon = new ImageIcon("./Plank.png");
+    Image image1 = yupIcon.getImage();
+    Image newimg1 = image1.getScaledInstance(Blocks.blockwidth, Blocks.blockheight, java.awt.Image.SCALE_SMOOTH);
+    ImageIcon planks = new ImageIcon(newimg1);
 
     ArrayList<Blocks> toremove = new ArrayList<Blocks>();
 
@@ -39,7 +50,7 @@ public class Tada extends JPanel implements ActionListener {
     Tada() {
         random = new Random();
         this.setPreferredSize(new Dimension(WIDTH, HEIGHT));
-        this.setBackground(Color.CYAN);
+        this.setBackground(new Color(0, 13, 40));
         this.setFocusable(true);
         this.addKeyListener(new MyKeyAdapter());
         play();
@@ -60,6 +71,7 @@ public class Tada extends JPanel implements ActionListener {
     public void paintComponent(Graphics graphics) {
         super.paintComponent(graphics);
         draw(graphics);
+        alienDood.paintIcon(this, graphics, x, y);
     }
 
     public void move() {
@@ -129,17 +141,19 @@ public class Tada extends JPanel implements ActionListener {
 
     public void draw(Graphics graphics) {
         if (running) {
-            graphics.setColor(new Color(0, 255, 0));
-            graphics.fillRect(x, y, guywidth, guyheight);
+            graphics.setColor(new Color(0, 13, 80));
+            for (int i = 0; i < 1000; i += 20) {
+                graphics.drawLine(i, 0, i, 1000);
+                graphics.drawLine(0, i, 1000, i);
+            }
 
             graphics.setColor(new Color(255, 0, 0));
             for (Blocks blocks : g.list) {
-                graphics.fillRect(blocks.blockx, blocks.blocky, Blocks.blockwidth,
-                        Blocks.blockheight);
+                planks.paintIcon(this, graphics, blocks.blockx, blocks.blocky);
             }
 
-            graphics.setColor(Color.white);
-            graphics.setFont(new Font("Sans serif", Font.ROMAN_BASELINE, 25));
+            graphics.setColor(Color.black);
+            graphics.setFont(new Font("Sans serif", Font.BOLD, 25));
             FontMetrics metrics = getFontMetrics(graphics.getFont());
             graphics.drawString("SCORE: " + score, (WIDTH - metrics.stringWidth("SCORE: " + score)) / 2,
                     graphics.getFont().getSize());
@@ -151,7 +165,8 @@ public class Tada extends JPanel implements ActionListener {
     public void checkBounce() {
         for (Blocks blocks : g.list) {
             if ((x + guywidth) >= (blocks.blockx) && x <= (blocks.blockx + Blocks.blockwidth)
-                    && (y + guyheight) >= (blocks.blocky) && (y + guyheight) <= (blocks.blocky + Blocks.blockheight)
+                    && (y + guyheight) >= (blocks.blocky + 7)
+                    && (y + guyheight) <= (blocks.blocky + Blocks.blockheight)
                     && vy >= 0) {
                 if (!blocks.bouncedon) {
                     blocks.bouncedon = true;

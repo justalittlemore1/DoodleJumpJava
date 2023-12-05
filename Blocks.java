@@ -1,8 +1,6 @@
 public class Blocks {
-    static int blockwidth = 200;
-    static int blockheight = 30;
-    // int blockx = (int) (Math.random() * (1000 - blockwidth));
-    // int blocky = (int) (Math.random() * 1000);
+    static int blockwidth = 207;
+    static int blockheight = 75;
     int blockx;
     int blocky;
     boolean bouncedon = false;
