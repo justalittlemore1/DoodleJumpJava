@@ -160,7 +160,7 @@ public class Tada extends JPanel implements ActionListener {
 
     public void checkBounce() {
         for (Blocks blocks : g.list) {
-            if ((x + guywidth) >= (blocks.blockx) && x <= (blocks.blockx + Blocks.blockwidth)
+            if ((x + guywidth - 40) >= (blocks.blockx) && (x + 40) <= (blocks.blockx + Blocks.blockwidth)
                     && (y + guyheight) >= (blocks.blocky + 7)
                     && (y + guyheight) <= (blocks.blocky + Blocks.blockheight)
                     && vy >= 0) {
