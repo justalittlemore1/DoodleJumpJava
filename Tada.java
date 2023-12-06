@@ -33,10 +33,15 @@ public class Tada extends JPanel implements ActionListener {
 
     Generation g = new Generation();
 
-    ImageIcon bruhIcon = new ImageIcon("./Broccoli.png");
-    Image image = bruhIcon.getImage();
-    Image newimg = image.getScaledInstance(guywidth, guyheight, java.awt.Image.SCALE_SMOOTH);
-    ImageIcon alienDood = new ImageIcon(newimg);
+    ImageIcon Dood0 = getZeImage("./Broccoli.png");
+    ImageIcon Dood1 = getZeImage("./Broccoli1.png");
+    ImageIcon Dood2 = getZeImage("./Broccoli2.png");
+    ImageIcon Dood3 = getZeImage("./Broccoli3.png");
+    ImageIcon Dood4 = getZeImage("./Broccoli4.png");
+
+    int cur = 0;
+    int curcounter = 0;
+    boolean bouncing = false;
 
     ImageIcon yupIcon = new ImageIcon("./Plank.png");
     Image image1 = yupIcon.getImage();
@@ -54,6 +59,14 @@ public class Tada extends JPanel implements ActionListener {
         play();
     }
 
+    public ImageIcon getZeImage(String filename) {
+        ImageIcon bruhIcon = new ImageIcon(filename);
+        Image image = bruhIcon.getImage();
+        Image newimg = image.getScaledInstance(guywidth, guywidth, java.awt.Image.SCALE_SMOOTH);
+        ImageIcon alienDood = new ImageIcon(newimg);
+        return alienDood;
+    }
+
     public void play() {
         running = true;
 
@@ -67,7 +80,39 @@ public class Tada extends JPanel implements ActionListener {
     public void paintComponent(Graphics graphics) {
         super.paintComponent(graphics);
         draw(graphics);
-        alienDood.paintIcon(this, graphics, x, y);
+
+        if (bouncing) {
+            bouncing = false;
+            cur++;
+        }
+        if (cur > 0) {
+            if (curcounter < 7) {
+                curcounter++;
+            }
+            if (curcounter == 7) {
+                curcounter = 0;
+                cur++;
+            }
+            switch (cur) {
+                case 1:
+                    Dood1.paintIcon(this, graphics, x, y);
+                    break;
+                case 2:
+                    Dood2.paintIcon(this, graphics, x, y);
+                    break;
+                case 3:
+                    Dood3.paintIcon(this, graphics, x, y);
+                    break;
+                case 4:
+                    Dood4.paintIcon(this, graphics, x, y);
+                    break;
+                default:
+                    cur = 0;
+                    Dood0.paintIcon(this, graphics, x, y);
+            }
+        } else {
+            Dood0.paintIcon(this, graphics, x, y);
+        }
     }
 
     public void move() {
@@ -160,7 +205,7 @@ public class Tada extends JPanel implements ActionListener {
 
     public void checkBounce() {
         for (Blocks blocks : g.list) {
-            if ((x + guywidth) >= (blocks.blockx) && x <= (blocks.blockx + Blocks.blockwidth)
+            if ((x + guywidth - 40) >= (blocks.blockx) && (x + 40) <= (blocks.blockx + Blocks.blockwidth)
                     && (y + guyheight) >= (blocks.blocky + 7)
                     && (y + guyheight) <= (blocks.blocky + Blocks.blockheight)
                     && vy >= 0) {
@@ -173,6 +218,7 @@ public class Tada extends JPanel implements ActionListener {
                     blocks.unstable = true;
                     score += score();
                 }
+                bouncing = true;
             }
         }
     }
