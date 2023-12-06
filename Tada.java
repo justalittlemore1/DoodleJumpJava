@@ -33,17 +33,17 @@ public class Tada extends JPanel implements ActionListener {
 
     Generation g = new Generation();
 
-    ImageIcon Dood0 = getZeImage("./Broccoli.png");
-    ImageIcon Dood1 = getZeImage("./Broccoli1.png");
-    ImageIcon Dood2 = getZeImage("./Broccoli2.png");
-    ImageIcon Dood3 = getZeImage("./Broccoli3.png");
-    ImageIcon Dood4 = getZeImage("./Broccoli4.png");
+    ImageIcon Dood0 = getZeImage("./Images/Broccoli.png");
+    ImageIcon Dood1 = getZeImage("./Images/Broccoli1.png");
+    ImageIcon Dood2 = getZeImage("./Images/Broccoli2.png");
+    ImageIcon Dood3 = getZeImage("./Images/Broccoli3.png");
+    ImageIcon Dood4 = getZeImage("./Images/Broccoli4.png");
 
     int cur = 0;
     int curcounter = 0;
     boolean bouncing = false;
 
-    ImageIcon yupIcon = new ImageIcon("./Plank.png");
+    ImageIcon yupIcon = new ImageIcon("./Images/Plank.png");
     Image image1 = yupIcon.getImage();
     Image newimg1 = image1.getScaledInstance(Blocks.blockwidth, Blocks.blockheight, java.awt.Image.SCALE_SMOOTH);
     ImageIcon planks = new ImageIcon(newimg1);
