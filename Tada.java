@@ -45,8 +45,6 @@ public class Tada extends JPanel implements ActionListener {
 
     ArrayList<Blocks> toremove = new ArrayList<Blocks>();
 
-    // ArrayList<Blocks> list = new ArrayList<Blocks>();
-
     Tada() {
         random = new Random();
         this.setPreferredSize(new Dimension(WIDTH, HEIGHT));
@@ -59,9 +57,7 @@ public class Tada extends JPanel implements ActionListener {
     public void play() {
         running = true;
 
-        // for (int i = 0; i < 10; i++) {
-        // list.add((new Blocks(0, 0)));
-        // }
+        g.initGen();
 
         timer = new Timer(1, this);
         timer.start();
