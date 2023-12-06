@@ -11,13 +11,13 @@ public class Tada extends JPanel implements ActionListener {
     static final int HEIGHT = 1000;
 
     int x = 500;
-    int y = 800;
+    int y = 500;
     int guywidth = 200;
     int guyheight = 200;
 
     double vx = 0.00;
     double ax = 0.00;
-    double vy = 12.0;
+    double vy = -32.0;
     double ay = 0.7;
 
     int bounceHeight = 0;
@@ -198,6 +198,10 @@ public class Tada extends JPanel implements ActionListener {
             FontMetrics metrics = getFontMetrics(graphics.getFont());
             graphics.drawString("SCORE: " + score, (WIDTH - metrics.stringWidth("SCORE: " + score)) / 2,
                     graphics.getFont().getSize());
+
+            if (y > HEIGHT) {
+                running = false;
+            }
         } else {
             gameOver(graphics);
         }
