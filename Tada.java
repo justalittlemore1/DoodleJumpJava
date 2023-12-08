@@ -11,13 +11,13 @@ public class Tada extends JPanel implements ActionListener {
     static final int HEIGHT = 1000;
 
     int x = 500;
-    int y = 800;
+    int y = 500;
     int guywidth = 200;
     int guyheight = 200;
 
     double vx = 0.00;
     double ax = 0.00;
-    double vy = 12.0;
+    double vy = -32.0;
     double ay = 0.7;
 
     int bounceHeight = 0;
@@ -33,12 +33,17 @@ public class Tada extends JPanel implements ActionListener {
 
     Generation g = new Generation();
 
-    ImageIcon bruhIcon = new ImageIcon("./Broccoli.png");
-    Image image = bruhIcon.getImage();
-    Image newimg = image.getScaledInstance(guywidth, guyheight, java.awt.Image.SCALE_SMOOTH);
-    ImageIcon alienDood = new ImageIcon(newimg);
+    ImageIcon Dood0 = getZeImage("./Images/Broccoli.png");
+    ImageIcon Dood1 = getZeImage("./Images/Broccoli1.png");
+    ImageIcon Dood2 = getZeImage("./Images/Broccoli2.png");
+    ImageIcon Dood3 = getZeImage("./Images/Broccoli3.png");
+    ImageIcon Dood4 = getZeImage("./Images/Broccoli4.png");
 
-    ImageIcon yupIcon = new ImageIcon("./Plank.png");
+    int cur = 0;
+    int curcounter = 0;
+    boolean bouncing = false;
+
+    ImageIcon yupIcon = new ImageIcon("./Images/Plank.png");
     Image image1 = yupIcon.getImage();
     Image newimg1 = image1.getScaledInstance(Blocks.blockwidth, Blocks.blockheight, java.awt.Image.SCALE_SMOOTH);
     ImageIcon planks = new ImageIcon(newimg1);
@@ -54,6 +59,14 @@ public class Tada extends JPanel implements ActionListener {
         play();
     }
 
+    public ImageIcon getZeImage(String filename) {
+        ImageIcon bruhIcon = new ImageIcon(filename);
+        Image image = bruhIcon.getImage();
+        Image newimg = image.getScaledInstance(guywidth, guywidth, java.awt.Image.SCALE_SMOOTH);
+        ImageIcon alienDood = new ImageIcon(newimg);
+        return alienDood;
+    }
+
     public void play() {
         running = true;
 
@@ -67,7 +80,39 @@ public class Tada extends JPanel implements ActionListener {
     public void paintComponent(Graphics graphics) {
         super.paintComponent(graphics);
         draw(graphics);
-        alienDood.paintIcon(this, graphics, x, y);
+
+        if (bouncing) {
+            bouncing = false;
+            cur++;
+        }
+        if (cur > 0) {
+            if (curcounter < 7) {
+                curcounter++;
+            }
+            if (curcounter == 7) {
+                curcounter = 0;
+                cur++;
+            }
+            switch (cur) {
+                case 1:
+                    Dood1.paintIcon(this, graphics, x, y);
+                    break;
+                case 2:
+                    Dood2.paintIcon(this, graphics, x, y);
+                    break;
+                case 3:
+                    Dood3.paintIcon(this, graphics, x, y);
+                    break;
+                case 4:
+                    Dood4.paintIcon(this, graphics, x, y);
+                    break;
+                default:
+                    cur = 0;
+                    Dood0.paintIcon(this, graphics, x, y);
+            }
+        } else {
+            Dood0.paintIcon(this, graphics, x, y);
+        }
     }
 
     public void move() {
@@ -172,6 +217,9 @@ public class Tada extends JPanel implements ActionListener {
                 g.numBlocks = 5;
                 g.maxYDist = 325;
                 g.minYDist = 275;
+
+            if (y > HEIGHT) {
+                running = false;
             }
         } else {
             gameOver(graphics);
@@ -180,7 +228,7 @@ public class Tada extends JPanel implements ActionListener {
 
     public void checkBounce() {
         for (Blocks blocks : g.list) {
-            if ((x + guywidth) >= (blocks.blockx) && x <= (blocks.blockx + Blocks.blockwidth)
+            if ((x + guywidth - 40) >= (blocks.blockx) && (x + 40) <= (blocks.blockx + Blocks.blockwidth)
                     && (y + guyheight) >= (blocks.blocky + 7)
                     && (y + guyheight) <= (blocks.blocky + Blocks.blockheight)
                     && vy >= 0) {
@@ -193,6 +241,7 @@ public class Tada extends JPanel implements ActionListener {
                     blocks.unstable = true;
                     score += score();
                 }
+                bouncing = true;
             }
         }
     }
