@@ -217,7 +217,7 @@ public class Tada extends JPanel implements ActionListener {
                 g.numBlocks = 5;
                 g.maxYDist = 325;
                 g.minYDist = 275;
-
+            }
             if (y > HEIGHT) {
                 running = false;
             }
