@@ -153,6 +153,26 @@ public class Tada extends JPanel implements ActionListener {
             FontMetrics metrics = getFontMetrics(graphics.getFont());
             graphics.drawString("SCORE: " + score, (WIDTH - metrics.stringWidth("SCORE: " + score)) / 2,
                     graphics.getFont().getSize());
+
+            int minY = g.getMinY(g.positions);
+
+            if (score >= 2000 + minY && score <= 5000 + minY) {
+                g.numBlocks = 9;
+                g.maxYDist = 200;
+                g.minYDist = 150;
+            } else if (score > 5000 + minY && score <= 7500 + minY) {
+                g.numBlocks = 7;
+                g.maxYDist = 300;
+                g.minYDist = 250;
+            } else if (score > 7500 + minY && score <= 10000 + minY) {
+                g.numBlocks = 6;
+                g.maxYDist = 325;
+                g.minYDist = 275;
+            } else if (score > 10000 + minY) {
+                g.numBlocks = 5;
+                g.maxYDist = 325;
+                g.minYDist = 275;
+            }
         } else {
             gameOver(graphics);
         }
