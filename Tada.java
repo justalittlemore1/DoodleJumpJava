@@ -2,6 +2,8 @@ import java.awt.*;
 
 import javax.swing.*;
 import java.awt.event.*;
+import java.awt.geom.AffineTransform;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -48,6 +50,12 @@ public class Tada extends JPanel implements ActionListener {
     Image newimg1 = image1.getScaledInstance(Blocks.blockwidth, Blocks.blockheight, java.awt.Image.SCALE_SMOOTH);
     ImageIcon planks = new ImageIcon(newimg1);
 
+    int endcounter = 0;
+    boolean endbool = false;
+
+    // ImageIcon PixelDood = getZeImage("./Images/PixelatedDood.png");
+    AffineTransform identity = new AffineTransform();
+
     ArrayList<Blocks> toremove = new ArrayList<Blocks>();
 
     Tada() {
@@ -56,6 +64,17 @@ public class Tada extends JPanel implements ActionListener {
         this.setBackground(new Color(0, 13, 40));
         this.setFocusable(true);
         this.addKeyListener(new MyKeyAdapter());
+
+        try {
+            File file = new File("./Fonts/Fantasy.ttf");
+            Font font = Font.createFont(Font.TRUETYPE_FONT, file);
+            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+            ge.registerFont(font);
+            ge.getAllFonts();
+        } catch (Exception e) {
+            // Only here because of exception error.
+        }
+
         play();
     }
 
@@ -188,16 +207,16 @@ public class Tada extends JPanel implements ActionListener {
                 graphics.drawLine(0, i, 1000, i);
             }
 
+            graphics.setColor(Color.white);
+            graphics.setFont(new Font("Ancient Modern Tales", Font.PLAIN, 80));
+            FontMetrics metrics = getFontMetrics(graphics.getFont());
+            graphics.drawString("SCORE: " + score, (WIDTH - metrics.stringWidth("SCORE: " + score)) / 2,
+                    graphics.getFont().getSize());
+
             graphics.setColor(new Color(255, 0, 0));
             for (Blocks blocks : g.list) {
                 planks.paintIcon(this, graphics, blocks.blockx, blocks.blocky);
             }
-
-            graphics.setColor(Color.white);
-            graphics.setFont(new Font("Sans serif", Font.BOLD, 25));
-            FontMetrics metrics = getFontMetrics(graphics.getFont());
-            graphics.drawString("SCORE: " + score, (WIDTH - metrics.stringWidth("SCORE: " + score)) / 2,
-                    graphics.getFont().getSize());
 
             int minY = g.getMinY(g.positions);
 
@@ -218,6 +237,7 @@ public class Tada extends JPanel implements ActionListener {
                 g.maxYDist = 325;
                 g.minYDist = 275;
             }
+          
             if (y > HEIGHT) {
                 running = false;
             }
@@ -247,15 +267,39 @@ public class Tada extends JPanel implements ActionListener {
     }
 
     public void gameOver(Graphics graphics) {
-        graphics.setColor(Color.red);
-        graphics.setFont(new Font("Sans serif", Font.ROMAN_BASELINE, 50));
-        FontMetrics metrics = getFontMetrics(graphics.getFont());
-        graphics.drawString("GAME OVER", (WIDTH - metrics.stringWidth("GAME OVER")) / 2, HEIGHT / 2);
+        if (endcounter > 40) {
+            endcounter = 0;
+            endbool = !endbool;
+        }
 
-        graphics.setColor(Color.white);
-        graphics.setFont(new Font("Sans serif", Font.ROMAN_BASELINE, 25));
+        if (endbool) {
+            graphics.setColor(Color.white);
+        } else {
+            graphics.setColor(Color.red);
+        }
+        graphics.setFont(new Font("Ancient Modern Tales", Font.PLAIN, 190));
+        FontMetrics metrics = getFontMetrics(graphics.getFont());
+        graphics.drawString("GAME OVER", (WIDTH - metrics.stringWidth("GAME OVER")) / 2,
+                (HEIGHT / 2) + (graphics.getFont().getSize() / 2));
+
+        if (!endbool) {
+            graphics.setColor(Color.white);
+        } else {
+            graphics.setColor(Color.blue);
+        }
+        graphics.setFont(new Font("Ancient Modern Tales", Font.PLAIN, 150));
         metrics = getFontMetrics(graphics.getFont());
-        graphics.drawString("SCORE: ", (WIDTH - metrics.stringWidth("SCORE: ")) / 2, graphics.getFont().getSize());
+        graphics.drawString("SCORE: " + score, (WIDTH - metrics.stringWidth("SCORE: " + score)) / 2,
+                HEIGHT / 3);
+
+        // Cool animation code
+        Graphics2D g2d = (Graphics2D) graphics;
+        AffineTransform trans = new AffineTransform();
+        trans.setTransform(identity);
+        trans.rotate(Math.toRadians(45));
+        // g2d.drawImage(PixelDood, trans, this);
+
+        endcounter++;
     }
 
     public int score() {
