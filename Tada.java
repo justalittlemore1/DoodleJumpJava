@@ -1,8 +1,10 @@
 import java.awt.*;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.event.*;
 import java.awt.geom.AffineTransform;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Random;
@@ -53,10 +55,34 @@ public class Tada extends JPanel implements ActionListener {
     int endcounter = 0;
     boolean endbool = false;
 
-    // ImageIcon PixelDood = getZeImage("./Images/PixelatedDood.png");
-    AffineTransform identity = new AffineTransform();
+    public static BufferedImage original;
+    public static BufferedImage rotated90;
+    public static BufferedImage rotatedMinus90;
 
     ArrayList<Blocks> toremove = new ArrayList<Blocks>();
+
+    public BufferedImage rotate(BufferedImage image, Double degrees) {
+        double radians = Math.toRadians(degrees);
+        double sin = Math.abs(Math.sin(radians));
+        double cos = Math.abs(Math.cos(radians));
+        int newWidth = (int) Math.round(image.getWidth() * cos + image.getHeight() * sin);
+        int newHeight = (int) Math.round(image.getWidth() * sin + image.getHeight() * cos);
+
+        BufferedImage rotate = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2d = rotate.createGraphics();
+        int x11 = (newWidth - image.getWidth()) / 2;
+        int y11 = (newHeight - image.getHeight()) / 2;
+        AffineTransform at = new AffineTransform();
+        at.setToRotation(radians, x + (image.getWidth() / 2), y + (image.getHeight() / 2));
+        at.translate(x11, y11);
+        g2d.setTransform(at);
+        g2d.drawImage(image, 0, 0, null);
+        g2d.dispose();
+
+        System.out.println("Reached here!");
+        System.out.println(rotate);
+        return rotate;
+    }
 
     Tada() {
         random = new Random();
@@ -71,6 +97,11 @@ public class Tada extends JPanel implements ActionListener {
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
             ge.registerFont(font);
             ge.getAllFonts();
+
+            original = ImageIO.read(getClass().getResource("./Images/PixelatedDood.png"));
+            rotated90 = rotate(original, 90.0d);
+            rotatedMinus90 = rotate(original, -90.0d);
+
         } catch (Exception e) {
             // Only here because of exception error.
         }
@@ -237,7 +268,7 @@ public class Tada extends JPanel implements ActionListener {
                 g.maxYDist = 325;
                 g.minYDist = 275;
             }
-          
+
             if (y > HEIGHT) {
                 running = false;
             }
@@ -292,12 +323,14 @@ public class Tada extends JPanel implements ActionListener {
         graphics.drawString("SCORE: " + score, (WIDTH - metrics.stringWidth("SCORE: " + score)) / 2,
                 HEIGHT / 3);
 
-        // Cool animation code
-        Graphics2D g2d = (Graphics2D) graphics;
-        AffineTransform trans = new AffineTransform();
-        trans.setTransform(identity);
-        trans.rotate(Math.toRadians(45));
-        // g2d.drawImage(PixelDood, trans, this);
+        // Experiment to create an animation!
+        ImageIcon temp1 = new ImageIcon(original);
+        ImageIcon temp2 = new ImageIcon(rotated90);
+        ImageIcon temp3 = new ImageIcon(rotatedMinus90);
+
+        temp1.paintIcon(this, graphics, 0, 500);
+        temp2.paintIcon(this, graphics, 200, 200);
+        temp3.paintIcon(this, graphics, 200, 200);
 
         endcounter++;
     }
