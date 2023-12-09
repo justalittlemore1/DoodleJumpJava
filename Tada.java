@@ -101,9 +101,9 @@ public class Tada extends JPanel implements ActionListener {
             original = ImageIO.read(getClass().getResource("./Images/PixelatedDood.png"));
             rotated90 = rotate(original, 90.0d);
             rotatedMinus90 = rotate(original, -90.0d);
-
         } catch (Exception e) {
             // Only here because of exception error.
+            System.err.println(e);
         }
 
         play();
@@ -249,26 +249,6 @@ public class Tada extends JPanel implements ActionListener {
                 planks.paintIcon(this, graphics, blocks.blockx, blocks.blocky);
             }
 
-            int minY = g.getMinY(g.positions);
-
-            if (score >= 2000 + minY && score <= 5000 + minY) {
-                g.numBlocks = 9;
-                g.maxYDist = 200;
-                g.minYDist = 150;
-            } else if (score > 5000 + minY && score <= 7500 + minY) {
-                g.numBlocks = 7;
-                g.maxYDist = 300;
-                g.minYDist = 250;
-            } else if (score > 7500 + minY && score <= 10000 + minY) {
-                g.numBlocks = 6;
-                g.maxYDist = 325;
-                g.minYDist = 275;
-            } else if (score > 10000 + minY) {
-                g.numBlocks = 5;
-                g.maxYDist = 325;
-                g.minYDist = 275;
-            }
-
             if (y > HEIGHT) {
                 running = false;
             }
@@ -351,6 +331,27 @@ public class Tada extends JPanel implements ActionListener {
         if (running) {
             move();
             checkBounce();
+
+            int minY = g.getMinY(g.positions);
+
+            if (score >= 2000 + minY && score <= 5000 + minY) {
+                g.numBlocks = 9;
+                g.maxYDist = 200;
+                g.minYDist = 150;
+            } else if (score > 5000 + minY && score <= 7500 + minY) {
+                g.numBlocks = 7;
+                g.maxYDist = 300;
+                g.minYDist = 250;
+            } else if (score > 7500 + minY && score <= 10000 + minY) {
+                g.numBlocks = 6;
+                g.maxYDist = 325;
+                g.minYDist = 275;
+            } else if (score > 10000 + minY) {
+                g.numBlocks = 5;
+                g.maxYDist = 325;
+                g.minYDist = 275;
+            }
+
             g.list.removeAll(toremove);
             toremove = new ArrayList<Blocks>();
 
