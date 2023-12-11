@@ -4,8 +4,10 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.event.*;
 import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -62,49 +64,32 @@ public class Tada extends JPanel implements ActionListener {
     ArrayList<Blocks> toremove = new ArrayList<Blocks>();
 
     public BufferedImage rotate(BufferedImage image, Double degrees) {
-        double radians = Math.toRadians(degrees);
-        double sin = Math.abs(Math.sin(radians));
-        double cos = Math.abs(Math.cos(radians));
-        int newWidth = (int) Math.round(image.getWidth() * cos + image.getHeight() * sin);
-        int newHeight = (int) Math.round(image.getWidth() * sin + image.getHeight() * cos);
+        AffineTransform tx = new AffineTransform();
+        tx.rotate(0.5, image.getWidth() / 2, image.getHeight() / 2);
 
-        BufferedImage rotate = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_INT_ARGB);
-        Graphics2D g2d = rotate.createGraphics();
-        int x11 = (newWidth - image.getWidth()) / 2;
-        int y11 = (newHeight - image.getHeight()) / 2;
-        AffineTransform at = new AffineTransform();
-        at.setToRotation(radians, x + (image.getWidth() / 2), y + (image.getHeight() / 2));
-        at.translate(x11, y11);
-        g2d.setTransform(at);
-        g2d.drawImage(image, 0, 0, null);
-        g2d.dispose();
+        AffineTransformOp op = new AffineTransformOp(tx,
+                AffineTransformOp.TYPE_BILINEAR);
+        image = op.filter(image, null);
 
-        System.out.println("Reached here!");
-        System.out.println(rotate);
-        return rotate;
+        return image;
     }
 
-    Tada() {
+    Tada() throws IOException, FontFormatException {
         random = new Random();
         this.setPreferredSize(new Dimension(WIDTH, HEIGHT));
         this.setBackground(new Color(0, 13, 40));
         this.setFocusable(true);
         this.addKeyListener(new MyKeyAdapter());
 
-        try {
-            File file = new File("./Fonts/Fantasy.ttf");
-            Font font = Font.createFont(Font.TRUETYPE_FONT, file);
-            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-            ge.registerFont(font);
-            ge.getAllFonts();
+        File file = new File("./Fonts/Fantasy.ttf");
+        Font font = Font.createFont(Font.TRUETYPE_FONT, file);
+        GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+        ge.registerFont(font);
+        ge.getAllFonts();
 
-            original = ImageIO.read(getClass().getResource("./Images/PixelatedDood.png"));
-            rotated90 = rotate(original, 90.0d);
-            rotatedMinus90 = rotate(original, -90.0d);
-        } catch (Exception e) {
-            // Only here because of exception error.
-            System.err.println(e);
-        }
+        original = ImageIO.read(getClass().getResource("./Images/PixelatedDood.png"));
+        rotated90 = rotate(original, 90.0d);
+        rotatedMinus90 = rotate(original, -90.0d);
 
         play();
     }
@@ -182,9 +167,9 @@ public class Tada extends JPanel implements ActionListener {
                 ax++;
             }
         }
-        if (key == KeyEvent.VK_UP) {
-            vy = -10;
-        }
+        // if (key == KeyEvent.VK_UP) {
+        // vy = -10;
+        // }
         if (key != KeyEvent.VK_LEFT && key != KeyEvent.VK_RIGHT) {
             if (vx > 0) {
                 vx -= 1;
@@ -310,7 +295,7 @@ public class Tada extends JPanel implements ActionListener {
 
         temp1.paintIcon(this, graphics, 0, 500);
         temp2.paintIcon(this, graphics, 200, 200);
-        temp3.paintIcon(this, graphics, 200, 200);
+        temp3.paintIcon(this, graphics, 500, 500);
 
         endcounter++;
     }
