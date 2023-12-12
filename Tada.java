@@ -57,19 +57,32 @@ public class Tada extends JPanel implements ActionListener {
     int endcounter = 0;
     boolean endbool = false;
 
-    public static BufferedImage original;
-    public static BufferedImage rotated90;
-    public static BufferedImage rotatedMinus90;
+    public static BufferedImage currentBufferedImage;
+    public static BufferedImage newBufferedImage;
+
+    // public static BufferedImage rotated90;
+    // public static BufferedImage rotatedMinus90;
 
     ArrayList<Blocks> toremove = new ArrayList<Blocks>();
 
     public BufferedImage rotate(BufferedImage image, Double degrees) {
-        AffineTransform tx = new AffineTransform();
-        tx.rotate(0.5, image.getWidth() / 2, image.getHeight() / 2);
+        // AffineTransform tx = new AffineTransform();
+        // tx.rotate(degrees, image.getWidth() / 3, image.getHeight() / 3);
 
+        // AffineTransformOp op = new AffineTransformOp(tx,
+        // AffineTransformOp.TYPE_BILINEAR);
+        // image = op.filter(image, null);
+
+        double rotationRequired = Math.toRadians(degrees);
+        double locationX = image.getWidth() / 2;
+        double locationY = image.getHeight() / 2;
+        AffineTransform tx = AffineTransform.getRotateInstance(rotationRequired,
+                locationX, locationY);
         AffineTransformOp op = new AffineTransformOp(tx,
                 AffineTransformOp.TYPE_BILINEAR);
-        image = op.filter(image, null);
+        BufferedImage newImage = new BufferedImage(image.getWidth(),
+                image.getHeight(), image.getType());
+        image = op.filter(image, newImage);
 
         return image;
     }
@@ -87,9 +100,7 @@ public class Tada extends JPanel implements ActionListener {
         ge.registerFont(font);
         ge.getAllFonts();
 
-        original = ImageIO.read(getClass().getResource("./Images/PixelatedDood.png"));
-        rotated90 = rotate(original, 90.0d);
-        rotatedMinus90 = rotate(original, -90.0d);
+        currentBufferedImage = ImageIO.read(getClass().getResource("./Images/PixelatedDood.png"));
 
         play();
     }
@@ -263,6 +274,12 @@ public class Tada extends JPanel implements ActionListener {
     }
 
     public void gameOver(Graphics graphics) {
+        // Experiment to create an animation!
+        BufferedImage newBufferedImage = rotate(currentBufferedImage, 2.0d);
+        currentBufferedImage = newBufferedImage;
+        ImageIcon currentIcon = new ImageIcon(currentBufferedImage);
+        currentIcon.paintIcon(this, graphics, 240, 250);
+
         if (endcounter > 40) {
             endcounter = 0;
             endbool = !endbool;
@@ -276,7 +293,7 @@ public class Tada extends JPanel implements ActionListener {
         graphics.setFont(new Font("Ancient Modern Tales", Font.PLAIN, 190));
         FontMetrics metrics = getFontMetrics(graphics.getFont());
         graphics.drawString("GAME OVER", (WIDTH - metrics.stringWidth("GAME OVER")) / 2,
-                (HEIGHT / 2) + (graphics.getFont().getSize() / 2));
+                550);
 
         if (!endbool) {
             graphics.setColor(Color.white);
@@ -286,18 +303,20 @@ public class Tada extends JPanel implements ActionListener {
         graphics.setFont(new Font("Ancient Modern Tales", Font.PLAIN, 150));
         metrics = getFontMetrics(graphics.getFont());
         graphics.drawString("SCORE: " + score, (WIDTH - metrics.stringWidth("SCORE: " + score)) / 2,
-                HEIGHT / 3);
+                250);
 
-        // Experiment to create an animation!
-        ImageIcon temp1 = new ImageIcon(original);
-        ImageIcon temp2 = new ImageIcon(rotated90);
-        ImageIcon temp3 = new ImageIcon(rotatedMinus90);
-
-        temp1.paintIcon(this, graphics, 0, 500);
-        temp2.paintIcon(this, graphics, 200, 200);
-        temp3.paintIcon(this, graphics, 500, 500);
+        if (!endbool) {
+            graphics.setColor(Color.white);
+        } else {
+            graphics.setColor(Color.green);
+        }
+        graphics.setFont(new Font("Ancient Modern Tales", Font.PLAIN, 150));
+        metrics = getFontMetrics(graphics.getFont());
+        graphics.drawString("BROCCOLI SOUP!", (WIDTH - metrics.stringWidth("BROCCOLI SOUP!")) / 2,
+                850);
 
         endcounter++;
+
     }
 
     public int score() {
