@@ -336,24 +336,26 @@ public class Tada extends JPanel implements ActionListener {
             move();
             checkBounce();
 
-            int minY = g.getMinY(g.positions);
-
-            if (score >= 2000 + minY && score <= 5000 + minY) {
+            if (score >= 2000 && score <= 5000) {
                 g.numBlocks = 9;
+                g.maxYDist = 150;
+                g.minYDist = 100;
+            } else if (score > 5000 && score <= 7500) {
+                g.numBlocks = 7;
                 g.maxYDist = 200;
                 g.minYDist = 150;
-            } else if (score > 5000 + minY && score <= 7500 + minY) {
-                g.numBlocks = 7;
-                g.maxYDist = 300;
-                g.minYDist = 250;
-            } else if (score > 7500 + minY && score <= 10000 + minY) {
+            } else if (score > 7500 && score <= 10000) {
                 g.numBlocks = 6;
-                g.maxYDist = 325;
-                g.minYDist = 275;
-            } else if (score > 10000 + minY) {
+                g.maxYDist = 250;
+                g.minYDist = 200;
+            } else if (score > 10000 && score <= 20000) {
                 g.numBlocks = 5;
-                g.maxYDist = 325;
-                g.minYDist = 275;
+                g.maxYDist = 400;
+                g.minYDist = 300;
+            } else if (score > 20000) {
+                g.numBlocks = 2;
+                g.maxYDist = 400;
+                g.minYDist = 300;
             }
 
             g.list.removeAll(toremove);
