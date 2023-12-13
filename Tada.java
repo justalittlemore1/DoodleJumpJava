@@ -60,19 +60,20 @@ public class Tada extends JPanel implements ActionListener {
     public static BufferedImage currentBufferedImage;
     public static BufferedImage newBufferedImage;
 
-    // public static BufferedImage rotated90;
-    // public static BufferedImage rotatedMinus90;
-
     ArrayList<Blocks> toremove = new ArrayList<Blocks>();
 
+    boolean BOOM = false;
+    int TICK = 0;
+    int FIREX, FIREY;
+    int fireball;
+    int FIREWIDTH = 232;
+
+    ImageIcon fireBaller = new ImageIcon("./Images/FIREBALL.png");
+    Image image2 = fireBaller.getImage();
+    Image newimg2 = image2.getScaledInstance(FIREWIDTH, 400, java.awt.Image.SCALE_SMOOTH);
+    ImageIcon fireBoomer = new ImageIcon(newimg2);
+
     public BufferedImage rotate(BufferedImage image, Double degrees) {
-        // AffineTransform tx = new AffineTransform();
-        // tx.rotate(degrees, image.getWidth() / 3, image.getHeight() / 3);
-
-        // AffineTransformOp op = new AffineTransformOp(tx,
-        // AffineTransformOp.TYPE_BILINEAR);
-        // image = op.filter(image, null);
-
         double rotationRequired = Math.toRadians(degrees);
         double locationX = image.getWidth() / 2;
         double locationY = image.getHeight() / 2;
@@ -178,9 +179,7 @@ public class Tada extends JPanel implements ActionListener {
                 ax++;
             }
         }
-        // if (key == KeyEvent.VK_UP) {
-        // vy = -10;
-        // }
+
         if (key != KeyEvent.VK_LEFT && key != KeyEvent.VK_RIGHT) {
             if (vx > 0) {
                 vx -= 1;
@@ -243,6 +242,38 @@ public class Tada extends JPanel implements ActionListener {
             graphics.setColor(new Color(255, 0, 0));
             for (Blocks blocks : g.list) {
                 planks.paintIcon(this, graphics, blocks.blockx, blocks.blocky);
+            }
+
+            if (!BOOM && TICK == 0) {
+                fireball = (int) (Math.random() * 200);
+            }
+            if (fireball == 8) {
+                FIREX = (int) (Math.random() * (1000 - FIREWIDTH));
+                FIREY = -500;
+                BOOM = true;
+                fireball = -8;
+            }
+            if (BOOM) {
+                BOOM = !BOOM;
+                TICK++;
+            }
+            if (TICK > 0 && TICK < 200) {
+                // Warning!
+                TICK++;
+                System.out.println(TICK);
+            }
+            if (TICK >= 200) {
+                System.out.println("Reached!");
+                fireBoomer.paintIcon(this, graphics, FIREX, FIREY);
+                FIREY = (TICK - 200) * 20 - 500;
+                if (ATIAAATIB) {
+                    FIREY -= (vy);
+                }
+                TICK++;
+
+                if (FIREY > 1000) {
+                    TICK = 0;
+                }
             }
 
             if (y > HEIGHT) {
