@@ -67,11 +67,18 @@ public class Tada extends JPanel implements ActionListener {
     int FIREX, FIREY;
     int fireball;
     int FIREWIDTH = 232;
+    int FIREHEIGHT = 400;
+    int flasher = 0;
 
     ImageIcon fireBaller = new ImageIcon("./Images/FIREBALL.png");
     Image image2 = fireBaller.getImage();
-    Image newimg2 = image2.getScaledInstance(FIREWIDTH, 400, java.awt.Image.SCALE_SMOOTH);
+    Image newimg2 = image2.getScaledInstance(FIREWIDTH, FIREHEIGHT, java.awt.Image.SCALE_SMOOTH);
     ImageIcon fireBoomer = new ImageIcon(newimg2);
+
+    ImageIcon arrower = new ImageIcon("./Images/Arrow.png");
+    Image image3 = arrower.getImage();
+    Image newimg3 = image3.getScaledInstance(100, 100, java.awt.Image.SCALE_SMOOTH);
+    ImageIcon arrow = new ImageIcon(newimg3);
 
     public BufferedImage rotate(BufferedImage image, Double degrees) {
         double rotationRequired = Math.toRadians(degrees);
@@ -257,15 +264,26 @@ public class Tada extends JPanel implements ActionListener {
                 BOOM = !BOOM;
                 TICK++;
             }
-            if (TICK > 0 && TICK < 200) {
+            if (TICK > 0 && TICK < 100) {
                 // Warning!
+                int temp = (int) ((Math.random() * 16) - 8);
+
+                if (flasher < 30) {
+                    arrow.paintIcon(this, graphics, FIREX + temp, 100);
+                    flasher++;
+                }
+                if (flasher >= 30 && flasher < 50) {
+                    flasher++;
+                }
+                if (flasher == 50) {
+                    flasher = 0;
+                }
                 TICK++;
-                System.out.println(TICK);
             }
-            if (TICK >= 200) {
-                System.out.println("Reached!");
-                fireBoomer.paintIcon(this, graphics, FIREX, FIREY);
-                FIREY = (TICK - 200) * 20 - 500;
+            if (TICK >= 100) {
+                int temp = (int) ((Math.random() * 50) - 25);
+                fireBoomer.paintIcon(this, graphics, FIREX + temp, FIREY);
+                FIREY = (TICK - 100) * 20 - 500;
                 if (ATIAAATIB) {
                     FIREY -= (vy);
                 }
@@ -273,6 +291,13 @@ public class Tada extends JPanel implements ActionListener {
 
                 if (FIREY > 1000) {
                     TICK = 0;
+                }
+
+                if ((x + guywidth - 40) >= (FIREX + temp) && (x + 40) <= (FIREX + temp + FIREWIDTH)
+                        && (y + guyheight) >= (FIREY + 7)
+                        && (y + guyheight) <= (FIREY + FIREHEIGHT)) {
+                    y = 1200;
+                    running = false;
                 }
             }
 
