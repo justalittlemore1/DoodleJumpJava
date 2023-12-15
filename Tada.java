@@ -69,6 +69,9 @@ public class Tada extends JPanel implements ActionListener {
     int FIREWIDTH = 232;
     int FIREHEIGHT = 400;
     int flasher = 0;
+    boolean gotHit = false;
+    ImageIcon currentIcon;
+    int deathcounter = 0;
 
     ImageIcon fireBaller = new ImageIcon("./Images/FIREBALL.png");
     Image image2 = fireBaller.getImage();
@@ -134,39 +137,6 @@ public class Tada extends JPanel implements ActionListener {
     public void paintComponent(Graphics graphics) {
         super.paintComponent(graphics);
         draw(graphics);
-
-        if (bouncing) {
-            bouncing = false;
-            cur++;
-        }
-        if (cur > 0) {
-            if (curcounter < 7) {
-                curcounter++;
-            }
-            if (curcounter == 7) {
-                curcounter = 0;
-                cur++;
-            }
-            switch (cur) {
-                case 1:
-                    Dood1.paintIcon(this, graphics, x, y);
-                    break;
-                case 2:
-                    Dood2.paintIcon(this, graphics, x, y);
-                    break;
-                case 3:
-                    Dood3.paintIcon(this, graphics, x, y);
-                    break;
-                case 4:
-                    Dood4.paintIcon(this, graphics, x, y);
-                    break;
-                default:
-                    cur = 0;
-                    Dood0.paintIcon(this, graphics, x, y);
-            }
-        } else {
-            Dood0.paintIcon(this, graphics, x, y);
-        }
     }
 
     public void move() {
@@ -240,69 +210,117 @@ public class Tada extends JPanel implements ActionListener {
                 graphics.drawLine(0, i, 1000, i);
             }
 
-            graphics.setColor(Color.white);
-            graphics.setFont(new Font("Ancient Modern Tales", Font.PLAIN, 80));
-            FontMetrics metrics = getFontMetrics(graphics.getFont());
-            graphics.drawString("SCORE: " + score, (WIDTH - metrics.stringWidth("SCORE: " + score)) / 2,
-                    graphics.getFont().getSize());
+            if (!gotHit) {
+                graphics.setColor(Color.white);
+                graphics.setFont(new Font("Ancient Modern Tales", Font.PLAIN, 80));
+                FontMetrics metrics = getFontMetrics(graphics.getFont());
+                graphics.drawString("SCORE: " + score, (WIDTH - metrics.stringWidth("SCORE: " + score)) / 2,
+                        graphics.getFont().getSize());
 
-            graphics.setColor(new Color(255, 0, 0));
-            for (Blocks blocks : g.list) {
-                planks.paintIcon(this, graphics, blocks.blockx, blocks.blocky);
-            }
-
-            if (!BOOM && TICK == 0) {
-                fireball = (int) (Math.random() * 200);
-            }
-            if (fireball == 8) {
-                FIREX = (int) (Math.random() * (1000 - FIREWIDTH));
-                FIREY = -500;
-                BOOM = true;
-                fireball = -8;
-            }
-            if (BOOM) {
-                BOOM = !BOOM;
-                TICK++;
-            }
-            if (TICK > 0 && TICK < 100) {
-                // Warning!
-                int temp = (int) ((Math.random() * 16) - 8);
-
-                if (flasher < 30) {
-                    arrow.paintIcon(this, graphics, FIREX + temp, 100);
-                    flasher++;
-                }
-                if (flasher >= 30 && flasher < 50) {
-                    flasher++;
-                }
-                if (flasher == 50) {
-                    flasher = 0;
-                }
-                TICK++;
-            }
-            if (TICK >= 100) {
-                int temp = (int) ((Math.random() * 50) - 25);
-                fireBoomer.paintIcon(this, graphics, FIREX + temp, FIREY);
-                FIREY = (TICK - 100) * 20 - 500;
-                if (ATIAAATIB) {
-                    FIREY -= (vy);
-                }
-                TICK++;
-
-                if (FIREY > 1000) {
-                    TICK = 0;
+                graphics.setColor(new Color(255, 0, 0));
+                for (Blocks blocks : g.list) {
+                    planks.paintIcon(this, graphics, blocks.blockx, blocks.blocky);
                 }
 
-                if ((x + guywidth - 40) >= (FIREX + temp) && (x + 40) <= (FIREX + temp + FIREWIDTH)
-                        && (y + guyheight) >= (FIREY + 7)
-                        && (y + guyheight) <= (FIREY + FIREHEIGHT)) {
-                    y = 1200;
+                if (bouncing) {
+                    bouncing = false;
+                    cur++;
+                }
+                if (cur > 0) {
+                    if (curcounter < 7) {
+                        curcounter++;
+                    }
+                    if (curcounter == 7) {
+                        curcounter = 0;
+                        cur++;
+                    }
+                    switch (cur) {
+                        case 1:
+                            Dood1.paintIcon(this, graphics, x, y);
+                            break;
+                        case 2:
+                            Dood2.paintIcon(this, graphics, x, y);
+                            break;
+                        case 3:
+                            Dood3.paintIcon(this, graphics, x, y);
+                            break;
+                        case 4:
+                            Dood4.paintIcon(this, graphics, x, y);
+                            break;
+                        default:
+                            cur = 0;
+                            Dood0.paintIcon(this, graphics, x, y);
+                    }
+                } else {
+                    Dood0.paintIcon(this, graphics, x, y);
+                }
+
+                if (!BOOM && TICK == 0) {
+                    fireball = (int) (Math.random() * 200);
+                }
+                if (fireball == 8) {
+                    FIREX = (int) (Math.random() * (1000 - FIREWIDTH));
+                    FIREY = -500;
+                    BOOM = true;
+                    fireball = -8;
+                }
+                if (BOOM) {
+                    BOOM = !BOOM;
+                    TICK++;
+                }
+                if (TICK > 0 && TICK < 100) {
+                    // Warning!
+                    int temp = (int) ((Math.random() * 16) - 8);
+
+                    if (flasher < 30) {
+                        arrow.paintIcon(this, graphics, FIREX + temp, 100);
+                        flasher++;
+                    }
+                    if (flasher >= 30 && flasher < 50) {
+                        flasher++;
+                    }
+                    if (flasher == 50) {
+                        flasher = 0;
+                    }
+                    TICK++;
+                }
+                if (TICK >= 100) {
+                    int temp = (int) ((Math.random() * 50) - 25);
+                    fireBoomer.paintIcon(this, graphics, FIREX + temp, FIREY);
+                    FIREY = (TICK - 100) * 20 - 500;
+                    if (ATIAAATIB) {
+                        FIREY -= (vy);
+                    }
+                    TICK++;
+
+                    if (FIREY > 1000) {
+                        TICK = 0;
+                    }
+
+                    if ((x + guywidth - 40) >= (FIREX + temp) && (x + 40) <= (FIREX + temp + FIREWIDTH)
+                            && (y + guyheight) >= (FIREY + 7)
+                            && (y + guyheight) <= (FIREY + FIREHEIGHT)) {
+                        gotHit = true;
+                        currentIcon = Dood0;
+                    }
+                }
+
+                if (y > HEIGHT) {
                     running = false;
                 }
-            }
 
-            if (y > HEIGHT) {
-                running = false;
+            } else {
+                x = 0;
+                y = 0;
+                Image endImage = currentIcon.getImage();
+                Image newEnd = endImage.getScaledInstance((int) (currentIcon.getIconHeight() * 1.5),
+                        (int) (currentIcon.getIconWidth() * 1.5), java.awt.Image.SCALE_SMOOTH);
+                currentIcon = new ImageIcon(newEnd);
+                currentIcon.paintIcon(this, graphics, -200, -200);
+                deathcounter++;
+                if (deathcounter > 5) {
+                    running = false;
+                }
             }
         } else {
             gameOver(graphics);
@@ -330,6 +348,12 @@ public class Tada extends JPanel implements ActionListener {
     }
 
     public void gameOver(Graphics graphics) {
+        graphics.setColor(new Color(0, 13, 80));
+        for (int i = 0; i < 1000; i += 20) {
+            graphics.drawLine(i, 0, i, 1000);
+            graphics.drawLine(0, i, 1000, i);
+        }
+
         // Experiment to create an animation!
         BufferedImage newBufferedImage = rotate(currentBufferedImage, 2.0d);
         currentBufferedImage = newBufferedImage;
