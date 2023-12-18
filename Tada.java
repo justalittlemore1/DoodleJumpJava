@@ -83,6 +83,8 @@ public class Tada extends JPanel implements ActionListener {
     Image newimg3 = image3.getScaledInstance(100, 100, java.awt.Image.SCALE_SMOOTH);
     ImageIcon arrow = new ImageIcon(newimg3);
 
+    int highScore = 0;
+
     public BufferedImage rotate(BufferedImage image, Double degrees) {
         double rotationRequired = Math.toRadians(degrees);
         double locationX = image.getWidth() / 2;
@@ -348,6 +350,10 @@ public class Tada extends JPanel implements ActionListener {
     }
 
     public void gameOver(Graphics graphics) {
+        if (score > highScore) {
+            highScore = score;
+        }
+
         graphics.setColor(new Color(0, 13, 80));
         for (int i = 0; i < 1000; i += 20) {
             graphics.drawLine(i, 0, i, 1000);
@@ -373,7 +379,7 @@ public class Tada extends JPanel implements ActionListener {
         graphics.setFont(new Font("Ancient Modern Tales", Font.PLAIN, 190));
         FontMetrics metrics = getFontMetrics(graphics.getFont());
         graphics.drawString("GAME OVER", (WIDTH - metrics.stringWidth("GAME OVER")) / 2,
-                550);
+                625);
 
         if (!endbool) {
             graphics.setColor(Color.white);
@@ -383,7 +389,17 @@ public class Tada extends JPanel implements ActionListener {
         graphics.setFont(new Font("Ancient Modern Tales", Font.PLAIN, 150));
         metrics = getFontMetrics(graphics.getFont());
         graphics.drawString("SCORE: " + score, (WIDTH - metrics.stringWidth("SCORE: " + score)) / 2,
-                250);
+                400);
+
+        if (!endbool) {
+            graphics.setColor(Color.MAGENTA);
+        } else {
+            graphics.setColor(Color.white);
+        }
+        graphics.setFont(new Font("Ancient Modern Tales", Font.PLAIN, 150));
+        metrics = getFontMetrics(graphics.getFont());
+        graphics.drawString("HIGHEST: " + highScore, (WIDTH - metrics.stringWidth("HIGHEST: " + highScore)) / 2,
+                175);
 
         if (!endbool) {
             graphics.setColor(Color.white);
@@ -393,10 +409,74 @@ public class Tada extends JPanel implements ActionListener {
         graphics.setFont(new Font("Ancient Modern Tales", Font.PLAIN, 150));
         metrics = getFontMetrics(graphics.getFont());
         graphics.drawString("BROCCOLI SOUP!", (WIDTH - metrics.stringWidth("BROCCOLI SOUP!")) / 2,
-                850);
+                950);
+
+        if (endbool) {
+            graphics.setColor(Color.white);
+        } else {
+            graphics.setColor(Color.ORANGE);
+        }
+        graphics.setFont(new Font("Ancient Modern Tales", Font.PLAIN, 50));
+        metrics = getFontMetrics(graphics.getFont());
+        graphics.drawString("(space to play again)", (WIDTH - metrics.stringWidth("(space to play again)")) / 2,
+                725);
 
         endcounter++;
 
+        if (key == KeyEvent.VK_SPACE) {
+            timer.stop();
+
+            x = 500;
+            y = 500;
+            guywidth = 200;
+            guyheight = 200;
+
+            vx = 0.00;
+            ax = 0.00;
+            vy = -32.0;
+            ay = 0.7;
+
+            bounceHeight = 0;
+            score = 0;
+
+            ATIAAATIB = false;
+
+            running = false;
+
+            g = new Generation();
+
+            cur = 0;
+            curcounter = 0;
+            bouncing = false;
+
+            endcounter = 0;
+            endbool = false;
+
+            toremove = new ArrayList<Blocks>();
+
+            BOOM = false;
+            TICK = 0;
+            FIREWIDTH = 232;
+            FIREHEIGHT = 400;
+            flasher = 0;
+            gotHit = false;
+            deathcounter = 0;
+
+            random = new Random();
+            this.setPreferredSize(new Dimension(WIDTH, HEIGHT));
+            this.setBackground(new Color(0, 13, 40));
+            this.setFocusable(true);
+            this.addKeyListener(new MyKeyAdapter());
+
+            try {
+                currentBufferedImage = ImageIO.read(getClass().getResource("./Images/PixelatedDood.png"));
+            } catch (Exception e) {
+                // TODO: handle exception
+            }
+
+            play();
+            super.paintComponent(graphics);
+        }
     }
 
     public int score() {
