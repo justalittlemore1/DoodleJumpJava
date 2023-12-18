@@ -142,7 +142,7 @@ public class Tada extends JPanel implements ActionListener {
     }
 
     public void move() {
-        if (key == KeyEvent.VK_LEFT) {
+        if (key == KeyEvent.VK_LEFT || key == KeyEvent.VK_A) {
             if (vx >= -7) {
                 vx -= ax;
             }
@@ -150,7 +150,7 @@ public class Tada extends JPanel implements ActionListener {
                 ax++;
             }
         }
-        if (key == KeyEvent.VK_RIGHT) {
+        if (key == KeyEvent.VK_RIGHT || key == KeyEvent.VK_D) {
             if (vx <= 7) {
                 vx += ax;
             }
@@ -159,7 +159,7 @@ public class Tada extends JPanel implements ActionListener {
             }
         }
 
-        if (key != KeyEvent.VK_LEFT && key != KeyEvent.VK_RIGHT) {
+        if (key != KeyEvent.VK_LEFT && key != KeyEvent.VK_RIGHT && key != KeyEvent.VK_D && key != KeyEvent.VK_A) {
             if (vx > 0) {
                 vx -= 1;
             }
