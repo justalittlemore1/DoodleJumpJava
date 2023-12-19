@@ -143,18 +143,18 @@ public class Tada extends JPanel implements ActionListener {
 
     public void move() {
         if (key == KeyEvent.VK_LEFT || key == KeyEvent.VK_A) {
-            if (vx >= -10) {
+            if (vx >= -9) {
                 vx -= ax;
             }
-            if (ax <= 10) {
+            if (ax <= 9) {
                 ax++;
             }
         }
         if (key == KeyEvent.VK_RIGHT || key == KeyEvent.VK_D) {
-            if (vx <= 10) {
+            if (vx <= 9) {
                 vx += ax;
             }
-            if (ax <= 10) {
+            if (ax <= 9) {
                 ax++;
             }
         }
@@ -473,7 +473,7 @@ public class Tada extends JPanel implements ActionListener {
             try {
                 currentBufferedImage = ImageIO.read(getClass().getResource("./Images/PixelatedDood.png"));
             } catch (Exception e) {
-                // TODO: handle exception
+                System.err.println(e);
             }
 
             play();
