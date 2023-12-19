@@ -473,7 +473,7 @@ public class Tada extends JPanel implements ActionListener {
             try {
                 currentBufferedImage = ImageIO.read(getClass().getResource("./Images/PixelatedDood.png"));
             } catch (Exception e) {
-                System.err.println(e);
+                // Har har har! -Agent Epsilon
             }
 
             play();
