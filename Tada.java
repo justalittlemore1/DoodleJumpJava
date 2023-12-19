@@ -27,7 +27,7 @@ public class Tada extends JPanel implements ActionListener {
     double ay = 0.7;
 
     int bounceHeight = 0;
-    int score = 0;
+    static int score = 0;
 
     boolean ATIAAATIB = false;
 
@@ -345,6 +345,8 @@ public class Tada extends JPanel implements ActionListener {
                 bouncing = true;
             }
         }
+        g.makeItMove();
+
     }
 
     public void gameOver(Graphics graphics) {
@@ -420,6 +422,7 @@ public class Tada extends JPanel implements ActionListener {
                 g.numBlocks = 9;
                 g.maxYDist = 150;
                 g.minYDist = 100;
+                g.canMove = true;
             } else if (score > 5000 && score <= 7500) {
                 g.numBlocks = 7;
                 g.maxYDist = 200;
@@ -428,14 +431,17 @@ public class Tada extends JPanel implements ActionListener {
                 g.numBlocks = 6;
                 g.maxYDist = 250;
                 g.minYDist = 200;
+                Blocks.moveProb = 50;
             } else if (score > 10000 && score <= 20000) {
                 g.numBlocks = 5;
                 g.maxYDist = 400;
                 g.minYDist = 300;
+                Blocks.moveProb = 35;
             } else if (score > 20000) {
                 g.numBlocks = 2;
                 g.maxYDist = 400;
                 g.minYDist = 300;
+                Blocks.moveProb = 15;
             }
 
             g.list.removeAll(toremove);

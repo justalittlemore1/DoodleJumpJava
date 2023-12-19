@@ -11,8 +11,10 @@ public class Generation {
     int minYDist = 50;
     int numBlocks = 10;
 
+    boolean canMove = false;
+
     public void initGen() {
-        this.list.add(new Blocks(500 - Blocks.blockwidth / 2, 900));
+        this.list.add(new Blocks(500 - Blocks.blockwidth / 2, 900, false));
         while (this.list.size() < 10) {
             moveBlocks();
         }
@@ -65,7 +67,13 @@ public class Generation {
         }
 
         if (x > 0 && x + Blocks.blockwidth < 1000) {
-            this.list.add(new Blocks(x, y));
+            this.list.add(new Blocks(x, y, canMove));
+        }
+    }
+
+    public void makeItMove() {
+        for (int i = 0; i < this.list.size(); i++) {
+            this.list.get(i).moveItMoveIt();
         }
     }
 
