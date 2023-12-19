@@ -143,18 +143,18 @@ public class Tada extends JPanel implements ActionListener {
 
     public void move() {
         if (key == KeyEvent.VK_LEFT || key == KeyEvent.VK_A) {
-            if (vx >= -7) {
+            if (vx >= -10) {
                 vx -= ax;
             }
-            if (ax <= 7) {
+            if (ax <= 10) {
                 ax++;
             }
         }
         if (key == KeyEvent.VK_RIGHT || key == KeyEvent.VK_D) {
-            if (vx <= 7) {
+            if (vx <= 10) {
                 vx += ax;
             }
-            if (ax <= 7) {
+            if (ax <= 10) {
                 ax++;
             }
         }
